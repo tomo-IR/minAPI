@@ -31,6 +31,25 @@ app.get('/comments', (req, res) => {
     });
 });
 
+app.get('/comment/:id', (req, res)=>{
+    const connection = mysql.createConnection({
+        host:  'localhost',
+        user: 'root',
+        password: '', 
+        database: 'sampledb'
+    });
+    connection.connect();
+    connection.query(`SELECT * FROM comments WHERE id="${req.params.id}"`, function (error, results, fields) {
+        if (error) throw error;
+        console.log(results);
+        console.log(req.params.id)
+        res.send("OK");
+        connection.end();
+    });
+
+
+})
+
 app.post('/comment',(req, res)=>{
     const connection = mysql.createConnection({
         host:  'localhost',
