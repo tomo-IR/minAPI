@@ -10,15 +10,15 @@ app.use(express.urlencoded({
 
 
 app.get('/', (req: express.Request, res: express.Response) => {
-  res.send('Hello World!!');
+    res.send('Hello World!!');
 })
 
 //一部追記
 app.get('/comments', (req, res) => {
     const connection = mysql.createConnection({
-        host:  'localhost',
+        host: 'localhost',
         user: 'root',
-        password: '', 
+        password: '',
         database: 'sampledb'
     });
     connection.connect();
@@ -27,15 +27,15 @@ app.get('/comments', (req, res) => {
         console.log(results);
         res.json(results)
         res.send(results); //追記
-        connection.end();
+        // connection.end();
     });
 });
 
-app.get('/comment/:id', (req, res)=>{
+app.get('/comment/:id', (req, res) => {
     const connection = mysql.createConnection({
-        host:  'localhost',
+        host: 'localhost',
         user: 'root',
-        password: '', 
+        password: '',
         database: 'sampledb'
     });
     connection.connect();
@@ -43,23 +43,23 @@ app.get('/comment/:id', (req, res)=>{
         if (error) throw error;
         console.log(results);
         console.log(req.params.id)
-        res.send("OK");
-        connection.end();
+        res.send(results);
+        // connection.end();
     });
 
 
 })
 
-app.post('/comment',(req, res)=>{
+app.post('/comment', (req, res) => {
     const connection = mysql.createConnection({
-        host:  'localhost',
+        host: 'localhost',
         user: 'root',
-        password: '', 
+        password: '',
         database: 'sampledb'
     });
     connection.connect();
     const comment = req.query.comment;
-    connection.query(`INSERT INTO comments (comment) VALUES ("${comment}")`, function(error, results, fields){
+    connection.query(`INSERT INTO comments (comment) VALUES ("${comment}")`, function (error, results, fields) {
         console.log(req.query.comment)
         res.send("post OK");
 
@@ -69,5 +69,5 @@ app.post('/comment',(req, res)=>{
 
 //追記
 app.listen(3000, function () {
-    console.log('Example app listening on port 3000!'); 
+    console.log('Example app listening on port 3000!');
 });
