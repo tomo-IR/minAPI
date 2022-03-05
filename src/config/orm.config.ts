@@ -1,5 +1,5 @@
 import { ConnectionOptions } from "typeorm";
-import { User } from "../service/user/entity/User";
+import { User } from "../entity/User";
 import { MysqlConnectionCredentialsOptions } from "typeorm/driver/mysql/MysqlConnectionCredentialsOptions";
 
 // const slaves: MysqlConnectionCredentialsOptions[] = [];
