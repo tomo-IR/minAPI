@@ -8,9 +8,13 @@ import { UserService } from './service/user/user.service';
 import { BindingScopeEnum, Container, injectable } from 'inversify';
 import { nextTick } from 'process';
 require('dotenv').config()
+// require("reflect-metadata");
+import "reflect-metadata";
 
 const env = process.env
 let connection: mysql.Connection;
+// let container = new Container;
+const userService = new UserService;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
@@ -29,11 +33,12 @@ app.use((req, res, next) => {
 })
 
 app.get('/', (req: express.Request, res: express.Response) => {
+    console.log(userService.getList());
     res.send('Hello World!!');
-    // console.log(userService.getList());
 })
 
 app.get('/comments', (req, res) => {
+    userService.test();
     connection.query('SELECT * FROM comments', function (error, results, fields) {
         if (error) throw error;
         console.log(results);
@@ -50,8 +55,6 @@ app.get('/comment/:id', (req, res) => {
         res.send(results);
         // connection.end();
     });
-
-
 })
 
 app.post('/comment', (req, res) => {
