@@ -1,16 +1,18 @@
 import { ConnectionOptions } from "typeorm";
 import { User } from "../entity/User";
 import { MysqlConnectionCredentialsOptions } from "typeorm/driver/mysql/MysqlConnectionCredentialsOptions";
+require('dotenv').config()
 
 // const slaves: MysqlConnectionCredentialsOptions[] = [];
+const env = process.env
 
 export default {
-    type: process.env.DB_TYPE,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
+    type: env.DB_TYPE,
+    host: env.DB_HOST,
+    port: env.DB_PORT,
+    username: env.DB_USER,
+    password: env.DB_PASSWORD,
+    database: env.DB_DATABASE,
     entities: [
         User
     ],

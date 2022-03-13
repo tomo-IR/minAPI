@@ -1,6 +1,5 @@
 import express from 'express';
 import * as mysql from 'mysql';
-// import { User } from './entity/User';
 import { User } from './entity/User';
 import { createConnection, getConnection, Repository, getRepository } from "typeorm";
 import  ConnectionOptions  from '../src/config/orm.config'
@@ -10,11 +9,13 @@ import { nextTick } from 'process';
 require('dotenv').config()
 // require("reflect-metadata");
 import "reflect-metadata";
+import { DAOConnectionManager } from './service/common/dao-connection-manager';
 
 const env = process.env
 let connection: mysql.Connection;
 // let container = new Container;
-const userService = new UserService;
+const dao = new DAOConnectionManager;
+const userService = new UserService(dao);
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
@@ -33,12 +34,17 @@ app.use((req, res, next) => {
 })
 
 app.get('/', (req: express.Request, res: express.Response) => {
-    console.log(userService.getList());
-    res.send('Hello World!!');
+    // userService.getList()
+    // console.log(userService.getList())
+    return userService.getList()
+    .then((r) => {
+        res.send(r)
+    });
+
 })
 
 app.get('/comments', (req, res) => {
-    userService.test();
+    // userService.test();
     connection.query('SELECT * FROM comments', function (error, results, fields) {
         if (error) throw error;
         console.log(results);
