@@ -1,32 +1,35 @@
-import express from 'express';
+import express, { response } from 'express';
 import * as mysql from 'mysql';
 import { UserService } from './service/user/user.service';
+import { AuthService } from './service/auth/auth.service'
 // import { BindingScopeEnum, Container, injectable } from 'inversify';
 require('dotenv').config()
 import "reflect-metadata";
 import { DAOConnectionManager } from './service/common/dao-connection-manager';
 
-const env = process.env
+
+// const env = process.env
 let connection: mysql.Connection;
 // let container = new Container;
 const dao = new DAOConnectionManager;
 const userService = new UserService(dao);
+const authservice = new AuthService(dao);
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
 	extended: true
 }));
 
-app.use((req, res, next) => {
-	connection = mysql.createConnection({
-		host: env.DB_HOST,
-		user: env.DB_USER,
-		password: env.DB_PASSWORD,
-		database: env.DB_DATABASE
-	});
-	connection.connect();
-	next();
-})
+// app.use((req, res, next) => {
+// 	connection = mysql.createConnection({
+// 		host: env.DB_HOST,
+// 		user: env.DB_USER,
+// 		password: env.DB_PASSWORD,
+// 		database: env.DB_DATABASE
+// 	});
+// 	connection.connect();
+// 	next();
+// })
 
 app.get('/', (req: express.Request, res: express.Response) => {
 	res.send('Hello Sologol!')
@@ -38,6 +41,18 @@ app.get('/user/:id', (req: express.Request, res: express.Response) => {
 			res.send(r)
 		})
 })
+
+app.post('/login', (req: express.Request, res: express.Response) => {
+	return authservice.login(String(req.query.userName), String(req.query.password))
+		.then((r) => {
+			res.send(r)
+		})
+})
+
+
+
+
+
 
 app.get('/comments', (req, res) => {
 	// userService.test();

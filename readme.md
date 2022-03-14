@@ -5,6 +5,8 @@ https://rinoguchi.net/2021/05/nodejs-typescript-db-web-application.html
 
 ### 認証関係
 https://qiita.com/AkihiroTakamura/items/ac4f1d3ec32effdd63d2
+https://nodejs.keicode.com/nodejs/jwt-basics.php
+https://qiita.com/sa9ra4ma/items/67edf18067eb64a0bf40
 
 
 ### typeorm導入
