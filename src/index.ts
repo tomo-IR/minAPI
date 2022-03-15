@@ -6,6 +6,8 @@ import { AuthService } from './service/auth/auth.service'
 require('dotenv').config()
 import "reflect-metadata";
 import { DAOConnectionManager } from './service/common/dao-connection-manager';
+import { rejects } from 'assert';
+import { jwt } from 'jsonwebtoken';
 
 
 // const env = process.env
@@ -14,6 +16,7 @@ let connection: mysql.Connection;
 const dao = new DAOConnectionManager;
 const userService = new UserService(dao);
 const authservice = new AuthService(dao);
+const SECRET_KEY = "secret";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
@@ -44,8 +47,31 @@ app.get('/user/:id', (req: express.Request, res: express.Response) => {
 
 app.post('/login', (req: express.Request, res: express.Response) => {
 	return authservice.login(String(req.query.userName), String(req.query.password))
-		.then((r) => {
-			res.send(r)
+		.then((auth) => {
+			if (auth) {
+				// 認証OKの場合の処理をここに書く
+				// console.log(r.id)
+				// res.send(r)
+
+				const payload = {
+					user: req.query.userName
+				};
+
+				const option = {
+					expiresIn: '1m'
+				}
+				// TODO パスワードがあっていたら、tokenを発行して、クライアントに返す
+				// const token = jwt.sign(payload, SECRET_KEY, option);
+				// res.json({
+				// 	message: "create token",
+				// 	token: token
+				// })
+				res.send(auth)
+
+
+			} else {
+				res.status(401).send('Unauthorized');
+			}
 		})
 })
 
